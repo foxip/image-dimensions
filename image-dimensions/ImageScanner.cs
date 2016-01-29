@@ -12,7 +12,11 @@ namespace Foxip.Image.Dimensions
 
             // Read the first 30 bytes
             byte[] b = new byte[30];
-            stream.Read(b, 0, b.Length);
+            if (stream.Read(b, 0, b.Length) != b.Length)
+            {
+                imageInfo.Error = "Too small";
+                return imageInfo;
+            }
 
             string s = Encoding.UTF8.GetString(b);
 
