@@ -138,7 +138,14 @@ namespace Foxip.Image.Dimensions
                         // Read more from the stream
                         offset = b.Length;
                         b = Resize(b, b.Length + len);
-                        stream.Read(b, offset, len);
+                        int bytesToRead = len;
+                        int bytesRead = stream.Read(b, offset, len);
+                        while (bytesToRead != bytesRead)
+                        {
+                            bytesToRead = (ushort)(bytesToRead - bytesRead);
+                            offset = offset + bytesRead;
+                            bytesRead = stream.Read(b, offset, bytesToRead);
+                        }
 
                         // SOF Marker for width/height
                         if (((marker >= 0xC0) && (marker <= 0xC3)) ||
