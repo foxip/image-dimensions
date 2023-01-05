@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Text;
 
 namespace Foxip.Image.Dimensions
@@ -9,6 +8,11 @@ namespace Foxip.Image.Dimensions
         public static ImageInfo GetImageInfo(Stream stream)
         {
             ImageInfo imageInfo = new ImageInfo();
+
+            if (stream.CanSeek)
+            {
+                stream.Position = 0;
+            }
 
             // Read the first 30 bytes
             byte[] buffer = new byte[30];
